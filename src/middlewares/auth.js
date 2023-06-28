@@ -5,9 +5,7 @@ const TokenTrue = (req, res, next) => {
     try {
         const { authorization } = req.headers;
         const token = authorization.split(" ").pop();
-
         const existo = jwt.verificarToken(token);
-
         if (!existo) {
             //que no puedo seguir trabajando
             return res.status(400).json(
@@ -28,7 +26,7 @@ const TokenTrue = (req, res, next) => {
         );
     }
 }
-
+// Metodo que obtiene los datos del usuario desde el token
 const obtenerData = (token) => {
     try {
         const data = jwt.verificarToken(token);
@@ -41,7 +39,7 @@ const obtenerData = (token) => {
         return false;
     }
 }
-
+// Exporto el metodo
 module.exports = {
     TokenTrue,
     obtenerData
