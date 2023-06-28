@@ -22,7 +22,6 @@ const obtenerPaises = async (req, res) => {
         `;
         //EJECUTAMOS LA CONSULTA
         const [rows] = await db.query(sql);
-        console.log(rows);
         //RETORNAMOS LA RESPUESTA
         res.json(
             {
@@ -147,7 +146,6 @@ const editarPais = async (req, res) => {
                 estado = ${estado}
             WHERE id_pais = ${id}
         `;
-        console.log(sql);
         //EJECUTAMOS LA CONSULTA
         const [resultado] = await db.query(sql);
         if (!resultado.affectedRows) {

@@ -65,13 +65,11 @@ const agregarUsuario = async (req, res) => {
             // "usuario": usuario
         });
     } catch (error) {
-        //console.log(error);
         return httpError(res, "Ocurrio algo en POST Usuario");
     }
 }
 //  METODO PARA EDITAR UNA RECETA
 const editarUsuario = async (req, res) => {
-    console.log(req.body);
     try {
         const { id } = req.params;
         const { nombre, apellido } = req.body;

@@ -11,7 +11,6 @@ const login = async (req, res) => {
     try {
         //DESCONTRUIMOS EL OBJETO BODY OBTENIENDO SOLO LOS CAMPOS A USAR
         const { user, password } = req.body;
-        console.log(user, password);
         //INSTACIA DE NUESTRA BASE DE DATOS
         const db = await database();
         //GENERAMOS QUERY A EJECUTAR
