@@ -1,4 +1,4 @@
-//PARA QUE LEA LAS VARIABLES DE ENTORNO
+// Objetivo: archivo principal de la aplicación
 require('dotenv').config();
 //IMPORTO EXPRESS
 const express = require('express');
@@ -13,7 +13,7 @@ const loginRoutes = require('./routes/login.routes');
 const recetasRoutes = require('./routes/recetas.routes');
 const paisesRoutes = require('./routes/paises.routes');
 const categoriasRoutes = require('./routes/categorias.routes');
-//LAS USO
+//RUTAS
 app.use('/usuario', usuarioRoutes);
 app.use('/auth', loginRoutes);
 app.use('/recetas', recetasRoutes);
