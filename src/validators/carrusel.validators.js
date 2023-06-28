@@ -24,5 +24,5 @@ const validadorCarrusel = [
 ];
 // Exportamos la funcion
 module.exports = {
-    validadorPaises
+    validadorCarrusel
 }

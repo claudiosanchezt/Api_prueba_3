@@ -13,12 +13,14 @@ const loginRoutes = require('./routes/login.routes');
 const recetasRoutes = require('./routes/recetas.routes');
 const paisesRoutes = require('./routes/paises.routes');
 const categoriasRoutes = require('./routes/categorias.routes');
+const carruselRoutes = require('./routes/carrusel.routes');
 //RUTAS
 app.use('/usuario', usuarioRoutes);
 app.use('/auth', loginRoutes);
 app.use('/recetas', recetasRoutes);
 app.use('/pais', paisesRoutes);
 app.use('/categoria', categoriasRoutes);
+app.use('/carrusel', carruselRoutes);
 //RUTA POR DEFECTO
 app.all('*', (req, res) => {
     res.json(
