@@ -1,24 +1,24 @@
 // Obtenemos el metodo Router de express
-const database = require('./../config/basedatos');
-const { httpError } = require('./../utils/error')
+const database = require('../config/basedatos');
+const { httpError } = require('../utils/error')
 const { matchedData } = require('express-validator');
 const { obtenerData } = require('../middlewares/auth');
 //CONTROLADORES
-const obtenerPaises = async (req, res) => {
+const obtenerCaruselTodos = async (req, res) => {
     try {
         const db = await database();
-        //  METODO PARA OBTENER TODAS LOS PAISES
+        //  METODO PARA OBTENER TODAS LOS CARRUSELES
         const sql = `
             SELECT 
-                p.id_pais,
-                p.nombre,
-                p.url_imagen,
-                p.fecha_creacion,
-                CASE p.estado
+                c.id_caru,
+                c.nombre,
+                c.url_imagen,
+                c.fecha_creacion,
+                CASE c.estado
                     WHEN 1 THEN 'Activo'
                     ELSE 'Inactivo'
                 END AS estado
-            FROM pais p
+            FROM carrusel c
         `;
         //EJECUTAMOS LA CONSULTA
         const [rows] = await db.query(sql);
@@ -34,7 +34,7 @@ const obtenerPaises = async (req, res) => {
     }
 }
 //  METODO PARA AGREGAR UNA PAIS
-const agregarPais = async (req, res) => {
+const agregarCarusel = async (req, res) => {
 
     try {
         const body = matchedData(req);
@@ -45,7 +45,7 @@ const agregarPais = async (req, res) => {
         const db = await database();
 
         const sql = `
-            INSERT INTO pais(nombre, url_imagen, estado, id_usr, fecha_creacion)
+            INSERT INTO carrusel (nombre, url_imagen, estado, id_usr, fecha_creacion)
             VALUES('${nombre}', '${url_imagen}', ${estado}, ${id_usuario}, NOW())
         `;
         const [resultado] = await db.query(sql);
@@ -53,7 +53,7 @@ const agregarPais = async (req, res) => {
             return res.json(
                 {
                     "ok": false,
-                    "msj": "no creaste nada del Pais"
+                    "msj": "no creaste nada del Carrusel"
                 }
             );
         }
@@ -64,12 +64,12 @@ const agregarPais = async (req, res) => {
             }
         );
     } catch (error) {
-        return httpError(res, "ERROR_POST_PAIS", error)
+        return httpError(res, "ERROR_POST_CARRUSEL", error)
     }
 
 }
 
-const obtenerPais = async (req, res) => {
+const obtenerCarusel = async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -77,16 +77,16 @@ const obtenerPais = async (req, res) => {
 
         const sql = `
         SELECT 
-                p.id_pais,
-                p.nombre,
-                p.url_imagen,
-                p.fecha_creacion,
-                CASE p.estado
+                c.id_caru,
+                c.nombre,
+                c.url_imagen,
+                c.fecha_creacion,
+                CASE c.estado
                     WHEN 1 THEN 'Activo'
                     ELSE 'Inactivo'
                 END AS estado
-            FROM pais p
-        WHERE p.id_pais = ${id}
+            FROM carrusel c
+        WHERE c.id_caru = ${id}
     `;
        //EJECUTAMOS LA CONSULTA 
        const [rows] = await db.query(sql);
@@ -98,66 +98,33 @@ const obtenerPais = async (req, res) => {
            }
        );
     } catch (error) {
-        return httpError(res, "ERROR_GET_UN_SOLO_DATO-DEL-PAIS")
-    }
-}
-// Metodos para buscar por nombre
-const obtenerPaisNombre = async (req, res) => {
-    try {
-        const { name } = req.params;
-        const db = await database();
-
-        const sql = `
-        SELECT 
-                p.id_pais,
-                p.nombre,
-                p.url_imagen,
-                p.fecha_creacion,
-                CASE p.estado
-                    WHEN 1 THEN 'Activo'
-                    ELSE 'Inactivo'
-                END AS estado
-            FROM pais p
-        WHERE p.nombre like '${name}%'
-
-    `;
-       //EJECUTAMOS LA CONSULTA 
-       const [rows] = await db.query(sql);
-       res.json(
-           {
-               "ok": true,
-               data: rows
-           }
-       );
-    } catch (error) {
-        return httpError(res, "ERROR_GET_UN_SOLO_DATO-DEL-PAIS-POR-NOMBRE")
+        return httpError(res, "ERROR_GET_UN_SOLO_DATO-DEL-CARRUSEL-POR-ID")
     }
 }
 // Metodos para editar
-const editarPais = async (req, res) => {
-
+const editarCarusel = async (req, res) => {
     try {
         const { id } = req.params;
         const { nombre, estado } = req.body;
         const db = await database();
         const sql = `
-            UPDATE pais SET
+            UPDATE carrusel SET
                 nombre = '${nombre}',
                 estado = ${estado}
-            WHERE id_pais = ${id}
+            WHERE id_caru = ${id}
         `;
         //EJECUTAMOS LA CONSULTA
         const [resultado] = await db.query(sql);
         if (!resultado.affectedRows) {
-            return httpError(res, "Error al Editar Pais");
+            return httpError(res, "Error al Editar el Carrusel");
         }
         //RETORNAMOS LA RESPUESTA
         return res.json({
             "ok": true,
-            "msj": "Se edito correctamente  la Receta"
+            "msj": "Se edito correctamente  el Carrusel"
         });
     } catch (error) {
-        return httpError(res, "Ocurrio algo en PUT Pais");
+        return httpError(res, "Ocurrio algo en PUT Carrusel");
     }
 }
 // Metodos para eliminar
