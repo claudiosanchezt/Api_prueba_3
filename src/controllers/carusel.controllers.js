@@ -105,11 +105,12 @@ const obtenerCarusel = async (req, res) => {
 const editarCarusel = async (req, res) => {
     try {
         const { id } = req.params;
-        const { nombre, estado } = req.body;
+        const { nombre, url_imagen, estado } = req.body;
         const db = await database();
         const sql = `
             UPDATE carrusel SET
                 nombre = '${nombre}',
+                url_imagen = '${url_imagen}',
                 estado = ${estado}
             WHERE id_caru = ${id}
         `;
@@ -128,32 +129,31 @@ const editarCarusel = async (req, res) => {
     }
 }
 // Metodos para eliminar
-const eliminarPais = async (req, res) => {
+const eliminarCarusel = async (req, res) => {
     try {
         const { id } = req.params;
         const db = await database();
-        const sql = `DELETE FROM pais WHERE id_pais = ${id}`;
+        const sql = `DELETE FROM carrusel WHERE id_caru = ${id}`;
         const [resultado] = await db.query(sql);
 
         if (!resultado.affectedRows) {
-            return httpError(res, "No se pudo eliminar nada del Pais");
+            return httpError(res, "No se pudo eliminar nada del Carrusel");
         }
 
         return res.json({
                 "ok": true,
-                "msj": "El pais fue eliminada correctamente"
+                "msj": "El Carrusel fue eliminada correctamente"
             });
 
     } catch (error) {
-        return httpError(res, "ERROR EN DELETE PAIS");
+        return httpError(res, "ERROR EN DELETE CARRUSEL");
     }
 }
 //EXPORTA NUESTRA RUTA PARA NUESTRO INDEX.JS
-module.exports = {  
-    obtenerPaises,
-    agregarPais,
-    obtenerPais,
-    obtenerPaisNombre,
-    editarPais,
-    eliminarPais           
+module.exports = {
+    obtenerCaruselTodos,
+    obtenerCarusel,
+    agregarCarusel,
+    editarCarusel,
+    eliminarCarusel         
 }
