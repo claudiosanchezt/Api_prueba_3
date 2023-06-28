@@ -154,7 +154,7 @@ const editarPais = async (req, res) => {
         //RETORNAMOS LA RESPUESTA
         return res.json({
             "ok": true,
-            "msj": "Se edito correctamente  la Receta"
+            "msj": "Se edito correctamente  el Pais"
         });
     } catch (error) {
         return httpError(res, "Ocurrio algo en PUT Pais");
