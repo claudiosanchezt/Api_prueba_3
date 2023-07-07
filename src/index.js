@@ -5,6 +5,12 @@ const express = require('express');
 //INICIALIZO EXPRESS
 const app = express();
 //CONFIGURACIONES
+app.use((_req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', '*');
+    res.header('Access-Control-Allow-Methods', '*');
+    next();
+  });
 app.use(express.json()); //PARA QUE EXPRESS LEA JSON DEL BODY
 app.use(express.urlencoded({ extended: false })); //PARA QUE EXPRESS LEA FORMULARIOS
 //IMPORTO RUTAS

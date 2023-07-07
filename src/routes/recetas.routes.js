@@ -4,6 +4,7 @@ const { Router } = require('express');
 const { obtenerRecetas,
     agregarReceta,
     obtenerReceta,
+    obtenerRecetaNombre,
     obtenerRecetaCategoriaNombre,
     obtenerRecetaPaisNombre,
     editarReceta,
@@ -17,6 +18,7 @@ const router = Router();
 router.get('/', obtenerRecetas);
 router.post('/', TokenTrue, [validadorRecetas], agregarReceta);
 router.get('/:id', obtenerReceta);
+router.get('/nombre/:name', obtenerRecetaNombre);
 router.get('/categoria/:name', obtenerRecetaCategoriaNombre);
 router.get('/pais/:name', obtenerRecetaPaisNombre);
 router.put('/:id',TokenTrue, editarReceta);
