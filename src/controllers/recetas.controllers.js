@@ -17,7 +17,9 @@ const obtenerRecetas = async (req, res) => {
                 r.ingrediente,
                 r.preparacion,
                 r.id_cat,
+                c.nombre as nombre_cat,
                 r.id_pais,
+                p.nombre as nombre_pais,    
                 r.fecha_creacion,
                 CASE r.estado
                     WHEN 1 THEN 'Activo'
@@ -27,6 +29,8 @@ const obtenerRecetas = async (req, res) => {
                 CONCAT(u.nombre, ' ', u.apellido) as nombre_y_apellido
             FROM receta r
             INNER JOIN usuario u ON u.id_usr = r.id_usr
+            INNER JOIN categoria c ON c.id_cat = r.id_cat
+            INNER JOIN pais p ON p.id_pais = r.id_pais
         `;
 
         const [rows] = await db.query(sql);
@@ -73,6 +77,46 @@ const agregarReceta = async (req, res) => {
         return httpError(res, "ERROR_POST_RECETA",error)
     }
 }
+//  METODO PARA OBTENER UNA RECETA POR NOMBRE 
+const obtenerRecetaNombre = async (req, res) => {
+    try {
+        const { name } = req.params;
+        const db = await database();
+        const sql = `
+        SELECT 
+                r.id_receta,
+                r.nombre,
+                r.url_imagen,
+                r.ingrediente,
+                r.preparacion,
+                r.id_cat,
+                c.nombre as nombre_cat,
+                r.id_pais,
+                p.nombre as nombre_pais,
+                r.fecha_creacion,
+                CASE r.estado
+                    WHEN 1 THEN 'Activo'
+                    ELSE 'Inactivo'
+                END AS estado,
+                u.id_usr,
+                CONCAT(u.nombre, ' ', u.apellido) as nombre_y_apellido
+            FROM receta r
+            INNER JOIN usuario u ON u.id_usr = r.id_usr
+            INNER JOIN categoria c ON c.id_cat = r.id_cat
+            INNER JOIN pais p ON p.id_pais = r.id_pais
+        WHERE r.nombre like '${name}%'
+    `;
+        const [rows] = await db.query(sql);
+        res.json(
+            {
+                "ok": true,
+                data: rows
+            }
+        );
+    } catch (error) {
+        return httpError(res, "ERROR_GET_UN_DATO-DE-LA-RECETA-POR-NOMBRE")
+    }
+}
 //  METODO PARA OBTENER UNA RECETA POR ID 
 const obtenerReceta = async (req, res) => {
     try {
@@ -86,7 +130,9 @@ const obtenerReceta = async (req, res) => {
                 r.ingrediente,
                 r.preparacion,
                 r.id_cat,
+                c.nombre as nombre_cat,
                 r.id_pais,
+                p.nombre as nombre_pais,
                 r.fecha_creacion,
                 CASE r.estado
                     WHEN 1 THEN 'Activo'
@@ -96,6 +142,8 @@ const obtenerReceta = async (req, res) => {
                 CONCAT(u.nombre, ' ', u.apellido) as nombre_y_apellido
             FROM receta r
             INNER JOIN usuario u ON u.id_usr = r.id_usr
+            INNER JOIN categoria c ON c.id_cat = r.id_cat
+            INNER JOIN pais p ON p.id_pais = r.id_pais
         WHERE r.id_receta = ${id}
     `;
         const [rows] = await db.query(sql);
@@ -122,7 +170,9 @@ const obtenerRecetaCategoriaNombre = async (req, res) => {
                 r.ingrediente,
                 r.preparacion,
                 r.id_cat,
+                c.nombre as nombre_cat,
                 r.id_pais,
+                p.nombre as nombre_pais,
                 r.fecha_creacion,
                 CASE r.estado
                     WHEN 1 THEN 'Activo'
@@ -130,6 +180,7 @@ const obtenerRecetaCategoriaNombre = async (req, res) => {
                 END AS estado
             FROM receta r
             INNER JOIN categoria c ON c.id_cat = r.id_cat
+            INNER JOIN pais p ON p.id_pais = r.id_pais
         WHERE c.nombre like '${name}%'
 
     `;
@@ -159,7 +210,9 @@ const obtenerRecetaPaisNombre = async (req, res) => {
                 r.ingrediente,
                 r.preparacion,
                 r.id_cat,
+                c.nombre as nombre_cat,
                 r.id_pais,
+                p.nombre as nombre_pais,
                 r.fecha_creacion,
                 CASE r.estado
                     WHEN 1 THEN 'Activo'
@@ -167,6 +220,7 @@ const obtenerRecetaPaisNombre = async (req, res) => {
                 END AS estado
             FROM receta r
             INNER JOIN pais p ON p.id_pais = r.id_pais
+            INNER JOIN categoria c ON c.id_cat = r.id_cat
         WHERE p.nombre like '${name}%'
 
     `;
@@ -245,6 +299,7 @@ module.exports = {
     obtenerRecetas,
     agregarReceta,
     obtenerReceta,
+    obtenerRecetaNombre,
     obtenerRecetaCategoriaNombre,
     obtenerRecetaPaisNombre,
     editarReceta,
