@@ -30,7 +30,8 @@ const obtenerCaruselTodos = async (req, res) => {
             }
         );
     } catch (error) {
-        httpError(res, "ERROR_GET_PAISES");
+        console.log(error);
+        httpError(res, "ERROR_GET_obtenerCaruselTodos");
     }
 }
 //  METODO PARA AGREGAR UNA PAIS
@@ -98,7 +99,7 @@ const obtenerCarusel = async (req, res) => {
            }
        );
     } catch (error) {
-        return httpError(res, "ERROR_GET_UN_SOLO_DATO-DEL-CARRUSEL-POR-ID")
+        return httpError(res, "ERROR_GET_CARRUSEL-POR-ID")
     }
 }
 // Metodos para editar

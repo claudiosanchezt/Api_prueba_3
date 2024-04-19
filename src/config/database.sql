@@ -16,10 +16,12 @@
 
 
 -- Volcando estructura de base de datos para api_prueba_3
+DROP DATABASE IF EXISTS `api_prueba_3`;
 CREATE DATABASE IF NOT EXISTS `api_prueba_3` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 USE `api_prueba_3`;
 
 -- Volcando estructura para tabla api_prueba_3.carrusel
+DROP TABLE IF EXISTS `carrusel`;
 CREATE TABLE IF NOT EXISTS `carrusel` (
   `id_caru` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
@@ -41,12 +43,13 @@ INSERT INTO `carrusel` (`id_caru`, `nombre`, `url_imagen`, `fecha_creacion`, `es
 	(4, 'd', 'https://www.cwp.com.mx/wp-content/uploads/2018/10/5-tips-para-que-tus-recetas-nunca-fallen-768x402.jpg', '2023-07-12', 1, 2);
 
 -- Volcando estructura para tabla api_prueba_3.categoria
+DROP TABLE IF EXISTS `categoria`;
 CREATE TABLE IF NOT EXISTS `categoria` (
   `id_cat` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
   `estado` tinyint(4) NOT NULL DEFAULT 0,
   `fecha_creacion` datetime NOT NULL,
-  `Comentario` int(11) DEFAULT NULL,
+  `Comentario` text DEFAULT NULL,
   `id_usr` int(11) NOT NULL,
   PRIMARY KEY (`id_cat`) USING BTREE,
   UNIQUE KEY `nombre` (`nombre`)
@@ -71,6 +74,7 @@ INSERT INTO `categoria` (`id_cat`, `nombre`, `estado`, `fecha_creacion`, `Coment
 	(15, 'Vegetarian', 1, '2023-06-27 11:40:50', NULL, 2);
 
 -- Volcando estructura para tabla api_prueba_3.pais
+DROP TABLE IF EXISTS `pais`;
 CREATE TABLE IF NOT EXISTS `pais` (
   `id_pais` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
@@ -94,6 +98,7 @@ INSERT INTO `pais` (`id_pais`, `nombre`, `url_imagen`, `estado`, `fecha_creacion
 	(6, 'Argentinian', 'https://www.themealdb.com/images/icons/flags/big/64/ar.png', 1, '2023-06-27 10:59:34', NULL, 2);
 
 -- Volcando estructura para tabla api_prueba_3.receta
+DROP TABLE IF EXISTS `receta`;
 CREATE TABLE IF NOT EXISTS `receta` (
   `id_receta` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(200) NOT NULL,
@@ -109,9 +114,11 @@ CREATE TABLE IF NOT EXISTS `receta` (
   UNIQUE KEY `nombre` (`nombre`),
   KEY `FK1_categorias` (`id_cat`),
   KEY `FK2_pais` (`id_pais`),
+  KEY `FK3_receta` (`id_usr`),
   CONSTRAINT `FK1_categorias` FOREIGN KEY (`id_cat`) REFERENCES `categoria` (`id_cat`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK2_pais` FOREIGN KEY (`id_pais`) REFERENCES `pais` (`id_pais`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  CONSTRAINT `FK2_pais` FOREIGN KEY (`id_pais`) REFERENCES `pais` (`id_pais`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK3_receta` FOREIGN KEY (`id_usr`) REFERENCES `usuario` (`id_usr`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Volcando datos para la tabla api_prueba_3.receta: ~30 rows (aproximadamente)
 DELETE FROM `receta`;
@@ -145,9 +152,11 @@ INSERT INTO `receta` (`id_receta`, `nombre`, `url_imagen`, `ingrediente`, `prepa
 	(28, 'Braised Beef Chilli', 'https://www.themealdb.com/images/media/meals/uuqvwu1504629254.jpg', ' 2 tbs Heavy Cream \n 2 tbs Heavy Cream \n 1 – 14-ounce can Condensed Milk \n 1 tsp Vanilla Extract \n 1-⅓ cups White Chocolate Chips \n 1-½ cups Miniature Marshmallows', 'Preheat the oven to 120C/225F/gas mark 1. Take the meat out of the fridge to de-chill. Pulse the onions and garlic in a food processor until finely chopped. Heat 2 tbsp olive oil in a large casserole and sear the meat on all sides until golden. Set to one side and add another small slug of oil to brown the chorizo. Remove and add the onion and garlic, spices, herbs and chillies then cook until soft in the chorizo oil. Season with salt and pepper and add the vinegar, tomatoes, ketchup and sugar. Put all the meat back into the pot with 400ml water (or red wine if you prefer), bring up to a simmer and cook, covered, in the low oven. After 2 hours, check the meat and add the beans. Cook for a further hour and just before serving, pull the meat apart with a pair of forks.', 1, 2, 5, '2023-06-27', 2),
 	(29, 'Crock Pot Chicken Baked Tacos', 'https://www.themealdb.com/images/media/meals/ypxvwv1505333929.jpg', ' 2 tbs Heavy Cream \n 2 tbs Heavy Cream \n 1 – 14-ounce can Condensed Milk \n 1 tsp Vanilla Extract \n 1-⅓ cups White Chocolate Chips \n 1-½ cups Miniature Marshmallows', 'Put the uncooked chicken breasts in the crock pot. Pour the full bottle of salad dressing over the chicken. Sprinkle the rest of the ingredients over the top and mix them in a bit with a spoon. Cover your crock pot with the lid and cook on high for 4 hours. Remove all the chicken breasts from the crock pot and let cool. Shred the chicken breasts and move to a glass bowl. Pour most of the liquid over the shredded chicken. FOR THE TACOS: Make the guacamole sauce by mixing the avocado and green salsa together. Pour the guacamole mixture through a strainer until smooth and transfer to a squeeze bottle. Cut the tip off the lid of the squeeze bottle to make the opening more wide if needed. Make the sour cream sauce by mixing the sour cream and milk together until you get a more liquid sour cream sauce. Transfer to a squeeze bottle. In a 9x 13 glass baking dish, fill all 12+ tacos with a layer of refried beans, cooked chicken and shredded cheese. Bake at 450 for 10-15 minutes just until the cheese is melted and bubbling. Out of the oven top all the tacos with the sliced grape tomaotes, jalapeno and cilantro. Finish with a drizzle of guacamole and sour cream. Enjoy!', 1, 3, 5, '2023-06-27', 2),
 	(30, 'Chickpea Fajitas', 'https://www.themealdb.com/images/media/meals/tvtxpq1511464705.jpg', ' 2 tbs Heavy Cream \n 2 tbs Heavy Cream \n 1 – 14-ounce can Condensed Milk \n 1 tsp Vanilla Extract \n 1-⅓ cups White Chocolate Chips \n 1-½ cups Miniature Marshmallows', 'Heat oven to 200C/180C fan/gas 6 and line a baking tray with foil. Drain the chickpeas, pat dry and tip onto the prepared baking tray. Add the oil and paprika, toss to coat, then roast for 20-25 mins until browned and crisp, shaking halfway through cooking. Meanwhile, put the tomatoes and onion in a small bowl with the vinegar and set aside to pickle. Put the avocado in another bowl and mash with a fork, leaving some larger chunks. Stir in the lime juice and season well. Mix the soured cream with the harissa and set aside until ready to serve. Heat a griddle pan until nearly smoking. Add the tortillas , one at a time, charring each side until hot with griddle lines. Put everything on the table and build the fajitas : spread a little of the harissa cream over the tortilla, top with roasted chickpeas, guacamole, pickled salsa and coriander, if you like. Serve with the lime wedges for squeezing over.', 1, 15, 5, '2023-06-27', 2),
-	(31, 'Stuffed Bell Peppers with Quinoa and Black Beans', 'https://www.themealdb.com/images/media/meals/b66myb1683207208.jpg', ' 2 tbs Heavy Cream \n 2 tbs Heavy Cream \n 1 – 14-ounce can Condensed Milk \n 1 tsp Vanilla Extract \n 1-⅓ cups White Chocolate Chips \n 1-½ cups Miniature Marshmallows', '1. Preheat your oven to 375°F (190°C). Lightly grease a 9x13-inch baking dish or a similar-sized casserole dish. 2. Place the bell pepper halves in the prepared baking dish, cut side up. Bake for 15-20 minutes, or until slightly softened. 3. While the bell peppers are baking, prepare the filling. In a large skillet, heat the olive oil over medium heat. Add the chopped onion, and cook for 3-4 minutes, until softened. Add the garlic, and cook for another 1 minute, until fragrant. 4. Stir in the cooked quinoa, black beans, corn, diced tomatoes, ground cumin, chili powder, smoked paprika, salt, and pepper. Cook for 5-7 minutes, until heated through. Remove the skillet from heat, and stir in 1 cup of the shredded cheese, if using. 5. Remove the bell peppers from the oven, and carefully stuff each pepper half with the quinoa and black bean mixture. Top the stuffed peppers with the remaining 1/2 cup of shredded cheese, if using. 6. Return the stuffed peppers to the oven, and bake for another 15-20 minutes, until the cheese is melted and the peppers are tender. 7. Remove from the oven, and allow the stuffed peppers to cool for 5 minutes before serving. Garnish with fresh chopped cilantro.', 1, 15, 5, '2023-06-27', 2);
+	(31, 'Stuffed Bell Peppers with Quinoa and Black Beans', 'https://www.themealdb.com/images/media/meals/b66myb1683207208.jpg', ' 2 tbs Heavy Cream \n 2 tbs Heavy Cream \n 1 – 14-ounce can Condensed Milk \n 1 tsp Vanilla Extract \n 1-⅓ cups White Chocolate Chips \n 1-½ cups Miniature Marshmallows', '1. Preheat your oven to 375°F (190°C). Lightly grease a 9x13-inch baking dish or a similar-sized casserole dish. 2. Place the bell pepper halves in the prepared baking dish, cut side up. Bake for 15-20 minutes, or until slightly softened. 3. While the bell peppers are baking, prepare the filling. In a large skillet, heat the olive oil over medium heat. Add the chopped onion, and cook for 3-4 minutes, until softened. Add the garlic, and cook for another 1 minute, until fragrant. 4. Stir in the cooked quinoa, black beans, corn, diced tomatoes, ground cumin, chili powder, smoked paprika, salt, and pepper. Cook for 5-7 minutes, until heated through. Remove the skillet from heat, and stir in 1 cup of the shredded cheese, if using. 5. Remove the bell peppers from the oven, and carefully stuff each pepper half with the quinoa and black bean mixture. Top the stuffed peppers with the remaining 1/2 cup of shredded cheese, if using. 6. Return the stuffed peppers to the oven, and bake for another 15-20 minutes, until the cheese is melted and the peppers are tender. 7. Remove from the oven, and allow the stuffed peppers to cool for 5 minutes before serving. Garnish with fresh chopped cilantro.', 1, 15, 5, '2023-06-27', 2),
+	(32, 'Chocolate Caliente Chileno', 'https://www.themealdb.com/images/media/meals/xrysxr1483568462.jpg', ' 3 tbs Heavy Cream \n 2 tbs Heavy Cream \n 1 – 14-ounce can Condensed Milk \n 1 tsp Vanilla Extract \n 1-⅓ cups White Chocolate Chips \n 1-½ cups Miniature Marshmallows', 'Line an 8-inch-square baking pan with wax paper or foil, and coat with non-stick spray. In a microwave-safe bowl, combine the dark chocolate chips, heavy cream and half of the sweetened condensed milk. Microwave the dark chocolate mixture in 20-second intervals, stirring in between each interval, until the chocolate is melted. Add the vanilla extract to the dark chocolate mixture and stir well until smooth. Transfer the dark chocolate mixture into the prepared pan and spread into an even layer. In a separate bowl, combine the white chocolate chips with the remaining half of the sweetened condensed milk. Microwave the white chocolate mixture in 20-second intervals, stirring in between each interval, until the chocolate is melted. Evenly spread the white chocolate mixture on top of dark chocolate layer. Top the chocolate layers with the Mallow Bits or miniature marshmallows, and gently press them down. Refrigerate for 4 hours, or until set. Remove the fudge and wax paper from the pan. Carefully peel all of the wax paper from the fudge. Cut the fudge into bite-sized pieces and serve.', 1, 4, 1, '2023-11-05', 4);
 
 -- Volcando estructura para tabla api_prueba_3.usuario
+DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE IF NOT EXISTS `usuario` (
   `id_usr` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(64) DEFAULT NULL,
@@ -162,8 +171,8 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 DELETE FROM `usuario`;
 INSERT INTO `usuario` (`id_usr`, `nombre`, `apellido`, `user`, `password`, `activo`) VALUES
 	(1, 'Pedrito', 'Salas', 'psalas', '$2b$10$r0jLqAIdNzm6eTL80cTWh.iWLDSqlpG0xv4QOrG.1RA9f6sDJtV8W', 1),
-	(2, 'Claudio', 'Sanchez', 'csancto', '$2b$10$kvyJDhTuUj4bfGP.e.2I8eqfeIkv3W17Q1GgOXZBPj4cT0QKFgVBG', 1),
-	(4, 'Claudio', 'Sanz', 'csanz', '$2b$10$Qg4jSc.qKONgSQ4U0DkAu.hwO.Rmr2XVtpxZIjlzJcH8dGKek0bAm', 1);
+	(2, 'Claudio', 'Sanchez', 'csancto', 'cast1301', 1),
+	(4, 'Chocolate Caliente Chileno', NULL, NULL, NULL, 0);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
