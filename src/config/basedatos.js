@@ -8,7 +8,6 @@ const configDatabase = {
     password: process.env.PASSWORD,
     database: process.env.DATABASE
 };
-console.log(configDatabase);
 const mysql = require('mysql2/promise');
 
 const createDbConnection = async () => {
